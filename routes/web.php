@@ -7,17 +7,18 @@ use App\Http\Controllers\Auth\ResetPasswordRequiredController;
 use App\Http\Controllers\Candidate\AiImportController;
 use App\Http\Controllers\Candidate\CvController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 Route::get('/', function () {
-    return Inertia::render('Welcome', [
-        'canLogin'       => Route::has('login'),
-        'canRegister'    => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion'     => PHP_VERSION,
-    ]);
+    $user = request()->user();
+    if (!$user) {
+        return redirect()->route('login');
+    }
+    if ($user->role === 'admin') {
+        return redirect()->route('admin.dashboard');
+    }
+    return redirect()->route('cv.edit');
 });
 
 Route::get('/dashboard', function () {

@@ -26,7 +26,7 @@
 
                             <p style="margin:0 0 16px;font-size:15px;color:#374151;line-height:1.6;">
                                 <strong>Irene Sampieri</strong> has invited you to fill in your CV on the
-                                <strong>CV Manager EU</strong> portal by Uni Systems.
+                                <strong>CV Manager EU</strong> portal by Fusion Soft.
                             </p>
 
                             <p style="margin:0 0 32px;font-size:15px;color:#374151;line-height:1.6;">

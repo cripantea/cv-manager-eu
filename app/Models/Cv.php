@@ -33,9 +33,9 @@ class Cv extends Model
     {
         return [
             'languages'       => 'array',
-            'birth_date'      => 'date',
-            'it_career_start' => 'date',
-            'date_available'  => 'date',
+            'birth_date'      => 'date:Y-m-d',
+            'it_career_start' => 'date:Y-m-d',
+            'date_available'  => 'date:Y-m-d',
         ];
     }
 
