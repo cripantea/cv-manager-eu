@@ -5,7 +5,7 @@
 
             <!-- Header -->
             <div class="flex items-center justify-between px-6 py-4 border-b border-gray-200">
-                <h2 class="text-base font-semibold text-gray-900">⚡ Importa da LinkedIn / PDF</h2>
+                <h2 class="text-base font-semibold text-gray-900">⚡ Import from LinkedIn / PDF</h2>
                 <button @click="$emit('close')" type="button" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
             </div>
 
@@ -36,14 +36,14 @@
                         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
                         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
                     </svg>
-                    <span class="text-sm font-medium">Analisi in corso...</span>
+                    <span class="text-sm font-medium">Analysing...</span>
                 </div>
 
                 <!-- Results state -->
                 <div v-else-if="extracted.length > 0" class="space-y-4">
                     <p class="text-sm text-gray-600">
-                        Trovati <strong>{{ extracted.length }}</strong> progett{{ extracted.length === 1 ? 'o' : 'i' }}.
-                        Seleziona quelli da aggiungere al CV.
+                        Found <strong>{{ extracted.length }}</strong> project{{ extracted.length === 1 ? '' : 's' }}.
+                        Select the ones to add to your CV.
                     </p>
 
                     <div class="space-y-3">
@@ -61,10 +61,10 @@
                             />
                             <div class="min-w-0 flex-1">
                                 <p class="text-sm font-semibold text-gray-900">
-                                    {{ project.employer || project.project_name || '(senza titolo)' }}
+                                    {{ project.employer || project.project_name || '(untitled)' }}
                                 </p>
                                 <p class="text-xs text-gray-500 mt-0.5">
-                                    {{ project.start_date ?? '?' }} — {{ project.end_date ?? 'In corso' }}
+                                    {{ project.start_date ?? '?' }} — {{ project.end_date ?? 'Ongoing' }}
                                     <span v-if="project.roles?.length" class="ml-2 text-gray-400">
                                         · {{ project.roles.join(', ') }}
                                     </span>
@@ -85,7 +85,7 @@
 
                     <div class="flex items-center justify-between pt-2">
                         <button @click="reset()" type="button" class="text-sm text-gray-500 hover:text-gray-700">
-                            ← Ricomincia
+                            ← Start over
                         </button>
                         <button
                             @click="confirmImport"
@@ -93,7 +93,7 @@
                             type="button"
                             class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         >
-                            Aggiungi al CV ({{ selected.size }})
+                            Add to CV ({{ selected.size }})
                         </button>
                     </div>
                 </div>
@@ -105,20 +105,20 @@
                     </div>
                     <div class="flex justify-start">
                         <button @click="reset()" type="button" class="text-sm text-gray-500 hover:text-gray-700">
-                            ← Ricomincia
+                            ← Start over
                         </button>
                     </div>
                 </div>
 
-                <!-- Input state: Testo LinkedIn -->
+                <!-- Input state: LinkedIn Text -->
                 <div v-else-if="activeTab === 'text'" class="space-y-4">
                     <p class="text-sm text-gray-500">
-                        Copia il testo dalla sezione <strong>Esperienze</strong> del tuo profilo LinkedIn e incollalo qui sotto.
+                        Copy the text from the <strong>Experience</strong> section of your LinkedIn profile and paste it below.
                     </p>
                     <textarea
                         v-model="inputText"
                         rows="10"
-                        placeholder="Incolla qui il testo copiato dalla sezione Experiences di LinkedIn..."
+                        placeholder="Paste here the text copied from the LinkedIn Experience section..."
                         class="w-full text-sm border border-gray-300 rounded-xl p-3 focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
                     />
                     <div class="flex justify-end">
@@ -128,15 +128,15 @@
                             type="button"
                             class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         >
-                            Importa
+                            Import
                         </button>
                     </div>
                 </div>
 
-                <!-- Input state: PDF CV -->
+                <!-- Input state: CV PDF -->
                 <div v-else-if="activeTab === 'pdf'" class="space-y-4">
                     <p class="text-sm text-gray-500">
-                        Carica il PDF del tuo CV. L'AI estrarrà automaticamente le esperienze lavorative.
+                        Upload your CV as a PDF. The AI will automatically extract your work experience.
                     </p>
                     <label class="flex flex-col items-center justify-center gap-3 border-2 border-dashed border-gray-300 rounded-xl p-8 cursor-pointer hover:border-blue-400 hover:bg-blue-50 transition-colors">
                         <svg class="h-10 w-10 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -144,7 +144,7 @@
                                 d="M9 13h6m-3-3v6m5 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414A1 1 0 0119 9.414V19a2 2 0 01-2 2z" />
                         </svg>
                         <span class="text-sm text-gray-500">
-                            {{ selectedFile ? selectedFile.name : 'Clicca per selezionare un PDF (max 5 MB)' }}
+                            {{ selectedFile ? selectedFile.name : 'Click to select a PDF (max 5 MB)' }}
                         </span>
                         <input type="file" accept="application/pdf" class="hidden" @change="onFileChange" />
                     </label>
@@ -155,7 +155,7 @@
                             type="button"
                             class="px-5 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         >
-                            Importa
+                            Import
                         </button>
                     </div>
                 </div>
@@ -171,8 +171,8 @@ import axios from 'axios';
 const emit = defineEmits(['close', 'imported']);
 
 const tabs = [
-    { key: 'text', label: 'Testo LinkedIn' },
-    { key: 'pdf',  label: 'PDF CV' },
+    { key: 'text', label: 'LinkedIn Text' },
+    { key: 'pdf',  label: 'CV PDF' },
 ];
 
 const activeTab    = ref('text');
@@ -215,7 +215,7 @@ async function importText() {
         const data = err.response?.data;
         errorMessage.value = data?.error
             ?? data?.message
-            ?? `Errore HTTP ${err.response?.status ?? 'di rete'}. Controlla la console.`;
+            ?? `HTTP error ${err.response?.status ?? 'network error'}. Check the console.`;
         console.error('[AiImport] fromText error:', err.response?.status, data);
     } finally {
         loading.value = false;
@@ -238,7 +238,7 @@ async function importPdf() {
         const data = err.response?.data;
         errorMessage.value = data?.error
             ?? data?.message
-            ?? `Errore HTTP ${err.response?.status ?? 'di rete'}. Controlla la console.`;
+            ?? `HTTP error ${err.response?.status ?? 'network error'}. Check the console.`;
         console.error('[AiImport] fromPdf error:', err.response?.status, data);
     } finally {
         loading.value = false;

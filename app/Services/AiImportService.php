@@ -37,7 +37,7 @@ class AiImportService
 
         if ($response->failed()) {
             throw new RuntimeException(
-                'Errore API Anthropic: ' . ($response->json('error.message') ?? $response->status())
+                'Anthropic API error: ' . ($response->json('error.message') ?? $response->status())
             );
         }
 
@@ -51,7 +51,7 @@ class AiImportService
         $text = $this->extractTextFromPdf($pdfPath);
 
         if (empty(trim($text))) {
-            throw new RuntimeException('Impossibile estrarre testo dal PDF. Il file potrebbe essere scansionato o protetto.');
+            throw new RuntimeException('Unable to extract text from the PDF. The file may be scanned or password-protected.');
         }
 
         // Truncate to avoid sending too many tokens (~30k chars ≈ 7500 tokens)
@@ -68,7 +68,7 @@ class AiImportService
         $output  = shell_exec("pdftotext {$escaped} -");
 
         if ($output === null) {
-            throw new RuntimeException('pdftotext non disponibile o errore durante l\'estrazione.');
+            throw new RuntimeException('pdftotext is not available or an extraction error occurred.');
         }
 
         return $output;
@@ -77,21 +77,21 @@ class AiImportService
     private function buildPrompt(): string
     {
         return <<<'PROMPT'
-Estrai le esperienze lavorative dal seguente testo e restituisci SOLO un JSON array
-con questa struttura per ogni esperienza:
+Extract the work experiences from the following text and return ONLY a JSON array
+with this structure for each experience:
 [{
   "project_name": "",
-  "employer": "nome azienda",
+  "employer": "company name",
   "client": "",
   "start_date": "YYYY-MM-DD",
-  "end_date": "YYYY-MM-DD o null se ancora in corso",
+  "end_date": "YYYY-MM-DD or null if still ongoing",
   "project_size": "S|M|L|XL",
-  "description": "descrizione del progetto/ruolo",
-  "roles": ["ruolo1", "ruolo2"],
-  "responsibilities": ["responsabilità1", "responsabilità2"],
+  "description": "description of the project/role",
+  "roles": ["role1", "role2"],
+  "responsibilities": ["responsibility1", "responsibility2"],
   "technologies": ["tech1", "tech2"]
 }]
-Non aggiungere nessun testo prima o dopo il JSON.
+Do not add any text before or after the JSON.
 PROMPT;
     }
 
@@ -106,7 +106,7 @@ PROMPT;
         $decoded = json_decode(trim($json), true);
 
         if (json_last_error() !== JSON_ERROR_NONE || !is_array($decoded)) {
-            throw new RuntimeException('Risposta AI non valida: impossibile parsare il JSON.');
+            throw new RuntimeException('Invalid AI response: unable to parse the JSON.');
         }
 
         return $decoded;

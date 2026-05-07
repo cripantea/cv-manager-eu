@@ -2,37 +2,37 @@
     <AppLayout>
         <!-- Auto-save status bar -->
         <div class="flex items-center justify-between mb-4">
-            <h1 class="text-xl font-bold text-gray-900">Il tuo CV — DIGIT-TM II</h1>
+            <h1 class="text-xl font-bold text-gray-900">Your CV — DIGIT-TM II</h1>
             <div class="flex items-center gap-2 text-sm">
                 <span v-if="saveStatus === 'saved'" class="text-green-600 font-medium">
-                    ✓ Salvato alle {{ lastSavedAt ?? '—' }}
+                    ✓ Saved at {{ lastSavedAt ?? '—' }}
                 </span>
                 <span v-else-if="saveStatus === 'saving'" class="text-blue-500 font-medium animate-pulse">
-                    Salvataggio...
+                    Saving...
                 </span>
                 <span v-else-if="saveStatus === 'pending'" class="text-gray-400 font-medium">
-                    In attesa...
+                    Pending...
                 </span>
                 <span v-else-if="saveStatus === 'error'" class="text-orange-500 font-medium" :title="saveErrorMessage">
-                    ⚠ Errore validazione
+                    ⚠ Validation error
                 </span>
                 <span v-else-if="saveStatus === 'offline'" class="text-red-500 font-medium">
-                    ⚠ Offline — dati locali
+                    ⚠ Offline — local data
                 </span>
             </div>
         </div>
 
         <!-- Locked banner -->
         <div v-if="isLocked" class="mb-4 px-4 py-3 bg-yellow-50 border border-yellow-300 rounded-lg text-yellow-800 text-sm font-medium">
-            CV bloccato — solo lettura. Contatta l'amministratore per richiedere modifiche.
+            CV locked — read only. Contact your administrator to request changes.
         </div>
 
         <!-- Draft recovery banner -->
         <div v-if="showRecovery" class="mb-4 px-4 py-3 bg-blue-50 border border-blue-300 rounded-lg text-blue-800 text-sm flex items-center justify-between">
-            <span>Trovata una bozza locale più recente. Vuoi ripristinarla?</span>
+            <span>A more recent local draft was found. Do you want to restore it?</span>
             <div class="flex gap-2">
-                <button @click="recoverDraft" class="text-xs px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Ripristina</button>
-                <button @click="showRecovery = false" class="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Ignora</button>
+                <button @click="recoverDraft" class="text-xs px-3 py-1 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Restore</button>
+                <button @click="showRecovery = false" class="text-xs px-3 py-1 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300">Dismiss</button>
             </div>
         </div>
 
@@ -114,9 +114,9 @@ const props = defineProps({
 import EducationTrainingSection from './Components/EducationTrainingSection.vue';
 
 const tabs = [
-    { key: 'personal',   label: 'Dati Personali' },
-    { key: 'education',  label: 'Formazione' },
-    { key: 'projects',   label: 'Progetti' },
+    { key: 'personal',   label: 'Personal Data' },
+    { key: 'education',  label: 'Education' },
+    { key: 'projects',   label: 'Projects' },
     { key: 'expertise',  label: 'Expertise' },
 ];
 

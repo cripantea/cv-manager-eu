@@ -21,7 +21,7 @@ class UserInvite extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Sei stato invitato a compilare il tuo CV — CV Manager EU',
+            subject: 'You have been invited to fill in your CV — CV Manager EU',
         );
     }
 

@@ -1,12 +1,12 @@
 <template>
     <div class="space-y-5">
         <h3 class="text-base font-semibold text-gray-900">
-            {{ form.id ? 'Modifica Progetto' : 'Nuovo Progetto' }}
+            {{ form.id ? 'Edit Project' : 'New Project' }}
         </h3>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div class="sm:col-span-2">
-                <label class="field-label">Nome progetto</label>
+                <label class="field-label">Project Name</label>
                 <input v-model="form.project_name" type="text" class="field" />
             </div>
             <div>
@@ -14,15 +14,15 @@
                 <input v-model="form.employer" type="text" class="field" />
             </div>
             <div>
-                <label class="field-label">Cliente</label>
+                <label class="field-label">Client</label>
                 <input v-model="form.client" type="text" class="field" />
             </div>
             <div>
-                <label class="field-label">Data inizio *</label>
+                <label class="field-label">Start Date *</label>
                 <input v-model="form.start_date" type="date" class="field" required />
             </div>
             <div>
-                <label class="field-label">Data fine</label>
+                <label class="field-label">End Date</label>
                 <div class="flex items-center gap-2">
                     <input
                         v-model="form.end_date"
@@ -32,14 +32,14 @@
                     />
                     <label class="flex items-center gap-1 text-xs text-gray-600 whitespace-nowrap cursor-pointer">
                         <input v-model="ongoing" type="checkbox" class="rounded" />
-                        In corso
+                        Ongoing
                     </label>
                 </div>
             </div>
             <div>
-                <label class="field-label">Dimensione progetto</label>
+                <label class="field-label">Project Size</label>
                 <select v-model="form.project_size" class="field">
-                    <option value="">— seleziona —</option>
+                    <option value="">— select —</option>
                     <option value="S">S — Small</option>
                     <option value="M">M — Medium</option>
                     <option value="L">L — Large</option>
@@ -49,45 +49,45 @@
         </div>
 
         <div>
-            <label class="field-label">Descrizione</label>
+            <label class="field-label">Description</label>
             <textarea v-model="form.description" rows="3" class="field resize-none" />
         </div>
 
         <!-- Roles -->
         <div>
             <div class="flex items-center justify-between mb-2">
-                <label class="field-label mb-0">Ruoli ricoperti</label>
-                <button @click="addRole" type="button" class="btn-add">+ Aggiungi ruolo</button>
+                <label class="field-label mb-0">Roles Held</label>
+                <button @click="addRole" type="button" class="btn-add">+ Add role</button>
             </div>
             <div class="space-y-2">
                 <div v-for="(role, idx) in form.roles" :key="idx" class="flex gap-2">
-                    <input v-model="form.roles[idx]" type="text" placeholder="es. Senior Java Developer" class="field" />
+                    <input v-model="form.roles[idx]" type="text" placeholder="e.g. Senior Java Developer" class="field" />
                     <button @click="form.roles.splice(idx, 1)" type="button" class="remove-btn">×</button>
                 </div>
             </div>
-            <p v-if="!form.roles?.length" class="text-sm text-gray-400 italic">Nessun ruolo aggiunto.</p>
+            <p v-if="!form.roles?.length" class="text-sm text-gray-400 italic">No roles added.</p>
         </div>
 
         <!-- Responsibilities -->
         <div>
             <div class="flex items-center justify-between mb-2">
-                <label class="field-label mb-0">Responsabilità</label>
-                <button @click="addResponsibility" type="button" class="btn-add">+ Aggiungi</button>
+                <label class="field-label mb-0">Responsibilities</label>
+                <button @click="addResponsibility" type="button" class="btn-add">+ Add</button>
             </div>
             <div class="space-y-2">
                 <div v-for="(item, idx) in form.responsibilities" :key="idx" class="flex gap-2">
-                    <input v-model="form.responsibilities[idx]" type="text" placeholder="es. Coordinamento team di 5 sviluppatori" class="field" />
+                    <input v-model="form.responsibilities[idx]" type="text" placeholder="e.g. Coordinating a team of 5 developers" class="field" />
                     <button @click="form.responsibilities.splice(idx, 1)" type="button" class="remove-btn">×</button>
                 </div>
             </div>
-            <p v-if="!form.responsibilities?.length" class="text-sm text-gray-400 italic">Nessuna responsabilità aggiunta.</p>
+            <p v-if="!form.responsibilities?.length" class="text-sm text-gray-400 italic">No responsibilities added.</p>
         </div>
 
         <!-- Technologies -->
         <div>
             <div class="flex items-center justify-between mb-2">
-                <label class="field-label mb-0">Tecnologie</label>
-                <button @click="addTechnology" type="button" class="btn-add">+ Aggiungi tecnologia</button>
+                <label class="field-label mb-0">Technologies</label>
+                <button @click="addTechnology" type="button" class="btn-add">+ Add technology</button>
             </div>
             <div class="space-y-2">
                 <div
@@ -95,7 +95,7 @@
                     :key="idx"
                     class="flex gap-2 items-center"
                 >
-                    <input v-model="tech.technology_name" type="text" placeholder="es. Vue.js" class="field" />
+                    <input v-model="tech.technology_name" type="text" placeholder="e.g. Vue.js" class="field" />
                     <select v-model.number="tech.competence" class="field w-28">
                         <option :value="null">—</option>
                         <option v-for="n in 5" :key="n" :value="n">{{ n }} / 5</option>
@@ -103,13 +103,13 @@
                     <button @click="form.technologies.splice(idx, 1)" type="button" class="remove-btn">×</button>
                 </div>
             </div>
-            <p v-if="!form.technologies?.length" class="text-sm text-gray-400 italic">Nessuna tecnologia aggiunta.</p>
+            <p v-if="!form.technologies?.length" class="text-sm text-gray-400 italic">No technologies added.</p>
         </div>
 
         <!-- Actions -->
         <div class="flex justify-end gap-3 pt-4 border-t border-gray-100">
-            <button @click="$emit('cancel')" type="button" class="btn-secondary">Annulla</button>
-            <button @click="submit" type="button" class="btn-primary">Salva progetto</button>
+            <button @click="$emit('cancel')" type="button" class="btn-secondary">Cancel</button>
+            <button @click="submit" type="button" class="btn-primary">Save project</button>
         </div>
     </div>
 </template>
@@ -161,7 +161,7 @@ async function submit() {
         }
         emit('saved', response.data);
     } catch (e) {
-        alert('Errore nel salvataggio del progetto. Riprova.');
+        alert('Error saving the project. Please try again.');
     }
 }
 </script>

@@ -1,61 +1,61 @@
 <template>
     <div class="space-y-6">
-        <h2 class="text-base font-semibold text-gray-900 border-b border-gray-100 pb-2">Dati Personali</h2>
+        <h2 class="text-base font-semibold text-gray-900 border-b border-gray-100 pb-2">Personal Data</h2>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Nome *</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">First Name *</label>
                 <input v-model="form.first_name" :disabled="disabled" type="text" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Cognome *</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Last Name *</label>
                 <input v-model="form.last_name" :disabled="disabled" type="text" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Data di nascita</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Date of Birth</label>
                 <input v-model="form.birth_date" :disabled="disabled" type="date" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Nazionalità</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Nationality</label>
                 <input v-model="form.nationality" :disabled="disabled" type="text" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Funzione attuale</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Current Function</label>
                 <input v-model="form.current_function" :disabled="disabled" type="text" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Profilo proposto (ruolo EU)</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Proposed Profile (EU role)</label>
                 <input v-model="form.profile_for" :disabled="disabled" type="text" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Disponibile dal</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Available From</label>
                 <input v-model="form.date_available" :disabled="disabled" type="date" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Livello proposto</label>
-                <input v-model="form.proposed_level" :disabled="disabled" type="text" placeholder="es. Level 6" class="field" />
+                <label class="block text-xs font-medium text-gray-600 mb-1">Proposed Level</label>
+                <input v-model="form.proposed_level" :disabled="disabled" type="text" placeholder="e.g. Level 6" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Titolo di studio</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Education Level</label>
                 <select v-model="form.education_level" :disabled="disabled" class="field">
-                    <option value="">— seleziona —</option>
-                    <option value="master">Master / Laurea Magistrale</option>
-                    <option value="bachelor">Laurea Triennale</option>
-                    <option value="secondary">Diploma</option>
+                    <option value="">— select —</option>
+                    <option value="master">Master / Master's Degree</option>
+                    <option value="bachelor">Bachelor's Degree</option>
+                    <option value="secondary">Secondary School Diploma</option>
                 </select>
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Anni dopo diploma</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Years After Secondary</label>
                 <input v-model.number="form.years_after_secondary" :disabled="disabled" type="number" min="0" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Inizio carriera IT</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">IT Career Start</label>
                 <input v-model="form.it_career_start" :disabled="disabled" type="date" class="field" />
             </div>
             <div>
-                <label class="block text-xs font-medium text-gray-600 mb-1">Tipo contratto</label>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Contract Type</label>
                 <select v-model="form.contract_type" :disabled="disabled" class="field">
-                    <option value="">— seleziona —</option>
+                    <option value="">— select —</option>
                     <option value="permanent">Permanent</option>
                     <option value="non-permanent">Non-permanent</option>
                     <option value="freelancer">Freelancer</option>
@@ -64,23 +64,23 @@
         </div>
 
         <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Profilo professionale</label>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Professional Profile</label>
             <textarea
                 v-model="form.profile_summary"
                 :disabled="disabled"
                 rows="4"
-                placeholder="Breve descrizione del profilo professionale..."
+                placeholder="Brief description of your professional profile..."
                 class="field resize-none"
             />
         </div>
 
         <div>
-            <label class="block text-xs font-medium text-gray-600 mb-1">Standard / Certificati</label>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Standards / Certificates</label>
             <textarea
                 v-model="form.standards_certificates"
                 :disabled="disabled"
                 rows="2"
-                placeholder="es. ISO 27001, PMP, ITIL..."
+                placeholder="e.g. ISO 27001, PMP, ITIL..."
                 class="field resize-none"
             />
         </div>
@@ -88,14 +88,14 @@
         <!-- Languages -->
         <div>
             <div class="flex items-center justify-between mb-3">
-                <h3 class="text-sm font-semibold text-gray-800">Lingue</h3>
+                <h3 class="text-sm font-semibold text-gray-800">Languages</h3>
                 <button
                     v-if="!disabled"
                     @click="addLanguage"
                     type="button"
                     class="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                 >
-                    + Aggiungi lingua
+                    + Add language
                 </button>
             </div>
 
@@ -106,24 +106,24 @@
                     class="grid grid-cols-12 gap-2 items-end p-3 bg-gray-50 rounded-lg border border-gray-200"
                 >
                     <div class="col-span-3">
-                        <label class="block text-xs text-gray-500 mb-1">Lingua</label>
-                        <input v-model="lang.name" :disabled="disabled" type="text" placeholder="Italiano" class="field text-sm" />
+                        <label class="block text-xs text-gray-500 mb-1">Language</label>
+                        <input v-model="lang.name" :disabled="disabled" type="text" placeholder="English" class="field text-sm" />
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-xs text-gray-500 mb-1">Parlato</label>
+                        <label class="block text-xs text-gray-500 mb-1">Spoken</label>
                         <select v-model="lang.spoken" :disabled="disabled" class="field text-sm">
                             <option v-for="n in levels" :key="n" :value="n">{{ n }}</option>
                         </select>
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-xs text-gray-500 mb-1">Scritto</label>
+                        <label class="block text-xs text-gray-500 mb-1">Written</label>
                         <select v-model="lang.written" :disabled="disabled" class="field text-sm">
                             <option v-for="n in levels" :key="n" :value="n">{{ n }}</option>
                         </select>
                     </div>
                     <div class="col-span-4">
-                        <label class="block text-xs text-gray-500 mb-1">Certificato</label>
-                        <input v-model="lang.certificate" :disabled="disabled" type="text" placeholder="es. B2, DELF..." class="field text-sm" />
+                        <label class="block text-xs text-gray-500 mb-1">Certificate</label>
+                        <input v-model="lang.certificate" :disabled="disabled" type="text" placeholder="e.g. B2, DELF..." class="field text-sm" />
                     </div>
                     <div class="col-span-1 flex justify-end">
                         <button
@@ -131,12 +131,12 @@
                             @click="removeLanguage(idx)"
                             type="button"
                             class="text-red-400 hover:text-red-600 text-lg leading-none"
-                            title="Rimuovi"
+                            title="Remove"
                         >×</button>
                     </div>
                 </div>
             </div>
-            <p v-else class="text-sm text-gray-400 italic">Nessuna lingua aggiunta.</p>
+            <p v-else class="text-sm text-gray-400 italic">No languages added.</p>
         </div>
     </div>
 </template>

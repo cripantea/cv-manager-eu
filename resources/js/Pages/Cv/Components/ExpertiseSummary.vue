@@ -7,8 +7,8 @@
             <table class="min-w-full text-sm">
                 <thead>
                     <tr class="border-b border-gray-200">
-                        <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2">Tecnologia</th>
-                        <th class="text-right text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2">Mesi</th>
+                        <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2">Technology</th>
+                        <th class="text-right text-xs font-semibold text-gray-500 uppercase tracking-wider pb-2">Months</th>
                         <th class="w-40 pb-2"></th>
                     </tr>
                 </thead>
@@ -30,13 +30,13 @@
 
             <!-- DIGIT-TM II formatted string -->
             <div class="mt-4 p-3 bg-gray-50 border border-gray-200 rounded-lg">
-                <p class="text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">Formato DIGIT-TM II</p>
+                <p class="text-xs font-semibold text-gray-500 mb-1 uppercase tracking-wider">DIGIT-TM II Format</p>
                 <p class="text-sm text-gray-700 leading-relaxed">{{ formattedString }}</p>
             </div>
         </div>
 
         <p v-else class="text-sm text-gray-400 italic">
-            Nessun dato. Aggiungi dei progetti con tecnologie per visualizzare l'expertise.
+            No data. Add projects with technologies to display your expertise.
         </p>
     </div>
 </template>

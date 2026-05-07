@@ -11,7 +11,7 @@
 
         <template v-else>
             <div class="flex items-center justify-between">
-                <h2 class="text-base font-semibold text-gray-900">Progetti ({{ projects.length }})</h2>
+                <h2 class="text-base font-semibold text-gray-900">Projects ({{ projects.length }})</h2>
                 <div class="flex gap-2">
                     <button
                         v-if="!disabled"
@@ -19,7 +19,7 @@
                         type="button"
                         class="text-xs px-3 py-1.5 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition-colors"
                     >
-                        ⚡ Importa da LinkedIn / PDF
+                        ⚡ Import from LinkedIn / PDF
                     </button>
                     <button
                         v-if="!disabled"
@@ -27,7 +27,7 @@
                         type="button"
                         class="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                     >
-                        + Nuovo Progetto
+                        + New Project
                     </button>
                 </div>
             </div>
@@ -48,11 +48,11 @@
                     <div class="flex items-start justify-between gap-3">
                         <div class="min-w-0">
                             <p class="text-sm font-semibold text-gray-900 truncate">
-                                {{ project.project_name || '(senza titolo)' }}
+                                {{ project.project_name || '(untitled)' }}
                             </p>
                             <p class="text-xs text-gray-500 mt-0.5">
                                 {{ formatDate(project.start_date) }} —
-                                {{ project.end_date ? formatDate(project.end_date) : 'In corso' }}
+                                {{ project.end_date ? formatDate(project.end_date) : 'Ongoing' }}
                                 <span v-if="project.employer" class="ml-2 text-gray-400">· {{ project.employer }}</span>
                             </p>
                             <!-- Technology badges -->
@@ -75,7 +75,7 @@
                                 type="button"
                                 class="text-xs px-3 py-1.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
                             >
-                                Modifica
+                                Edit
                             </button>
                             <button
                                 v-if="!disabled"
@@ -83,14 +83,14 @@
                                 type="button"
                                 class="text-xs px-3 py-1.5 bg-white border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
                             >
-                                Elimina
+                                Delete
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <p v-else class="text-sm text-gray-400 italic">Nessun progetto aggiunto. Clicca "+ Nuovo Progetto" per iniziare.</p>
+            <p v-else class="text-sm text-gray-400 italic">No projects added. Click "+ New Project" to get started.</p>
         </template>
     </div>
 </template>
@@ -117,7 +117,7 @@ const importing      = ref(false);
 function formatDate(dateStr) {
     if (!dateStr) return '—';
     const d = new Date(dateStr);
-    return d.toLocaleDateString('it-IT', { month: '2-digit', year: 'numeric' });
+    return d.toLocaleDateString('en-GB', { month: '2-digit', year: 'numeric' });
 }
 
 function onSaved(project) {
@@ -143,12 +143,12 @@ async function onAiImported(projects) {
 }
 
 async function deleteProject(project) {
-    if (!confirm(`Eliminare il progetto "${project.project_name || '(senza titolo)'}"?`)) return;
+    if (!confirm(`Delete project "${project.project_name || '(untitled)'}"?`)) return;
     try {
         await axios.delete(route('cv.projects.destroy', project.id));
         emit('project-deleted', project.id);
     } catch {
-        alert('Errore durante l\'eliminazione. Riprova.');
+        alert('Error while deleting. Please try again.');
     }
 }
 </script>

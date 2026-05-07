@@ -2,7 +2,7 @@
 @setup
 $server = 'srv961648.hstgr.cloud';
 
-$baseDir = '/var/www/html/unisystems';
+$baseDir = '/var/www/html/cv-manager-eu';
 $user = 'cristi';
 
 $php = 'php';

@@ -52,31 +52,31 @@ class UserController extends Controller
 
         Mail::to($user->email)->send(new UserInvite($user, $token));
 
-        return redirect()->back()->with('success', "Invito inviato a {$user->email}");
+        return redirect()->back()->with('success', "Invitation sent to {$user->email}");
     }
 
     public function resetAiImport(User $user): RedirectResponse
     {
-        abort_if(!$user->cv, 404, 'CV non trovato per questo utente.');
+        abort_if(!$user->cv, 404, 'CV not found for this user.');
 
         $user->cv->update(['ai_import_count' => 0]);
 
-        return redirect()->back()->with('success', "Contatore AI reset per {$user->name}.");
+        return redirect()->back()->with('success', "AI import counter reset for {$user->name}.");
     }
 
     public function suspend(User $user): RedirectResponse
     {
-        abort_if($user->isAdmin(), 403, 'Non puoi sospendere un amministratore.');
+        abort_if($user->isAdmin(), 403, 'You cannot suspend an administrator.');
 
         $user->update(['is_suspended' => true]);
 
-        return redirect()->back()->with('success', 'Utente sospeso con successo.');
+        return redirect()->back()->with('success', 'User suspended successfully.');
     }
 
     public function unsuspend(User $user): RedirectResponse
     {
         $user->update(['is_suspended' => false]);
 
-        return redirect()->back()->with('success', 'Utente riattivato con successo.');
+        return redirect()->back()->with('success', 'User reactivated successfully.');
     }
 }

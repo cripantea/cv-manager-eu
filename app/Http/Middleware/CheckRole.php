@@ -18,11 +18,11 @@ class CheckRole
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
-            return redirect('/login')->with('error', 'Account sospeso. Contatta l\'amministratore.');
+            return redirect('/login')->with('error', 'Account suspended. Contact your administrator.');
         }
 
         if (!$user || $user->role !== $role) {
-            return redirect('/dashboard')->with('error', 'Accesso non autorizzato.');
+            return redirect('/dashboard')->with('error', 'Unauthorised access.');
         }
 
         return $next($request);

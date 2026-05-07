@@ -1,7 +1,7 @@
 <template>
     <AppLayout>
         <div class="space-y-6">
-            <h1 class="text-2xl font-bold text-gray-900">Gestione Candidati</h1>
+            <h1 class="text-2xl font-bold text-gray-900">Candidate Management</h1>
 
             <!-- Flash messages -->
             <div v-if="flash.success" class="px-4 py-3 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm font-medium">
@@ -13,13 +13,13 @@
 
             <!-- Invite form -->
             <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-                <h2 class="text-base font-semibold text-gray-900 mb-4">Invita nuovo candidato</h2>
+                <h2 class="text-base font-semibold text-gray-900 mb-4">Invite new candidate</h2>
                 <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-3">
                     <div class="flex-1">
                         <input
                             v-model="inviteForm.name"
                             type="text"
-                            placeholder="Nome completo"
+                            placeholder="Full name"
                             required
                             class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         />
@@ -40,7 +40,7 @@
                         :disabled="inviteForm.processing"
                         class="px-5 py-2 bg-[#1F3864] text-white text-sm font-semibold rounded-lg hover:bg-[#162a4e] disabled:opacity-50 transition-colors whitespace-nowrap"
                     >
-                        {{ inviteForm.processing ? 'Invio...' : 'Invia invito' }}
+                        {{ inviteForm.processing ? 'Sending...' : 'Send invitation' }}
                     </button>
                 </form>
             </div>
@@ -49,11 +49,11 @@
                 <table class="min-w-full divide-y divide-gray-200">
                     <thead class="bg-gray-50">
                         <tr>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Nome</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Name</th>
                             <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Email</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Stato account</th>
-                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Registrato il</th>
-                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Azioni</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Account Status</th>
+                            <th class="px-6 py-3 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">Registered on</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-500 uppercase tracking-wider">Actions</th>
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
@@ -67,7 +67,7 @@
                                         : 'bg-green-100 text-green-800'"
                                     class="text-xs font-semibold px-2.5 py-0.5 rounded-full"
                                 >
-                                    {{ user.is_suspended ? 'Sospeso' : 'Attivo' }}
+                                    {{ user.is_suspended ? 'Suspended' : 'Active' }}
                                 </span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">{{ formatDate(user.created_at) }}</td>
@@ -82,24 +82,24 @@
                                     </button>
                                     <button
                                         v-if="!user.is_suspended"
-                                        @click="confirm(`Sospendere l'account di ${user.name}?`) && suspend(user)"
+                                        @click="confirm(`Suspend the account of ${user.name}?`) && suspend(user)"
                                         class="text-xs px-3 py-1.5 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors"
                                     >
-                                        Sospendi
+                                        Suspend
                                     </button>
                                     <button
                                         v-else
-                                        @click="confirm(`Riattivare l'account di ${user.name}?`) && unsuspend(user)"
+                                        @click="confirm(`Reactivate the account of ${user.name}?`) && unsuspend(user)"
                                         class="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                                     >
-                                        Riattiva
+                                        Reactivate
                                     </button>
                                 </div>
                             </td>
                         </tr>
                         <tr v-if="users.length === 0">
                             <td colspan="5" class="px-6 py-12 text-center text-sm text-gray-400">
-                                Nessun candidato trovato.
+                                No candidates found.
                             </td>
                         </tr>
                     </tbody>
@@ -127,12 +127,12 @@ const inviteForm = useForm({
 
 function formatDate(dateStr) {
     if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
 }
 
 function resetAiImport(user) {
     const count = user.cv?.ai_import_count ?? 0;
-    if (!confirm(`Reset contatore AI per ${user.name}? (attuale: ${count}/3)`)) return;
+    if (!confirm(`Reset AI counter for ${user.name}? (current: ${count}/3)`)) return;
     router.patch(route('admin.users.reset-ai-import', user.id));
 }
 

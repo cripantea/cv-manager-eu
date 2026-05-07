@@ -37,7 +37,7 @@ class CvAdminController extends Controller
 
         $cv->update(['status' => 'locked']);
 
-        return redirect()->back()->with('success', 'CV bloccato con successo.');
+        return redirect()->back()->with('success', 'CV locked successfully.');
     }
 
     public function unlock(Cv $cv): RedirectResponse
@@ -46,7 +46,7 @@ class CvAdminController extends Controller
 
         $cv->update(['status' => 'draft']);
 
-        return redirect()->back()->with('success', 'CV sbloccato con successo.');
+        return redirect()->back()->with('success', 'CV unlocked successfully.');
     }
 
     public function archive(Cv $cv): RedirectResponse
@@ -55,6 +55,6 @@ class CvAdminController extends Controller
 
         $cv->update(['status' => 'archived']);
 
-        return redirect()->back()->with('success', 'CV archiviato con successo.');
+        return redirect()->back()->with('success', 'CV archived successfully.');
     }
 }

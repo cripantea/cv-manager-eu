@@ -3,9 +3,9 @@
         <!-- Educations -->
         <div>
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-base font-semibold text-gray-900">Titoli di Studio</h2>
+                <h2 class="text-base font-semibold text-gray-900">Education</h2>
                 <button v-if="!disabled" @click="addEducation" type="button" class="btn-add">
-                    + Aggiungi
+                    + Add
                 </button>
             </div>
 
@@ -16,19 +16,19 @@
                     class="grid grid-cols-12 gap-2 items-end p-3 bg-gray-50 rounded-lg border border-gray-200"
                 >
                     <div class="col-span-5">
-                        <label class="block text-xs text-gray-500 mb-1">Diploma / Certificato</label>
+                        <label class="block text-xs text-gray-500 mb-1">Diploma / Certificate</label>
                         <input v-model="edu.certificate_diploma" :disabled="disabled" type="text" class="field" />
                     </div>
                     <div class="col-span-3">
-                        <label class="block text-xs text-gray-500 mb-1">Istituto</label>
+                        <label class="block text-xs text-gray-500 mb-1">Institution</label>
                         <input v-model="edu.institute" :disabled="disabled" type="text" class="field" />
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-xs text-gray-500 mb-1">Inizio (mm/yy)</label>
+                        <label class="block text-xs text-gray-500 mb-1">Start (mm/yy)</label>
                         <input v-model="edu.start_date" :disabled="disabled" type="text" placeholder="09/19" class="field" />
                     </div>
                     <div class="col-span-1">
-                        <label class="block text-xs text-gray-500 mb-1">Fine (mm/yy)</label>
+                        <label class="block text-xs text-gray-500 mb-1">End (mm/yy)</label>
                         <input v-model="edu.end_date" :disabled="disabled" type="text" placeholder="06/23" class="field" />
                     </div>
                     <div class="col-span-1 flex justify-end items-end">
@@ -36,15 +36,15 @@
                     </div>
                 </div>
             </div>
-            <p v-else class="text-sm text-gray-400 italic">Nessun titolo aggiunto.</p>
+            <p v-else class="text-sm text-gray-400 italic">No education entries added.</p>
         </div>
 
         <!-- Trainings -->
         <div>
             <div class="flex items-center justify-between mb-3">
-                <h2 class="text-base font-semibold text-gray-900">Corsi e Training</h2>
+                <h2 class="text-base font-semibold text-gray-900">Courses & Training</h2>
                 <button v-if="!disabled" @click="addTraining" type="button" class="btn-add">
-                    + Aggiungi
+                    + Add
                 </button>
             </div>
 
@@ -55,19 +55,19 @@
                     class="grid grid-cols-12 gap-2 items-end p-3 bg-gray-50 rounded-lg border border-gray-200"
                 >
                     <div class="col-span-4">
-                        <label class="block text-xs text-gray-500 mb-1">Nome corso</label>
+                        <label class="block text-xs text-gray-500 mb-1">Course Name</label>
                         <input v-model="tr.training_name" :disabled="disabled" type="text" class="field" />
                     </div>
                     <div class="col-span-3">
-                        <label class="block text-xs text-gray-500 mb-1">Ente / Azienda</label>
+                        <label class="block text-xs text-gray-500 mb-1">Organisation / Company</label>
                         <input v-model="tr.company_institute" :disabled="disabled" type="text" class="field" />
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-xs text-gray-500 mb-1">Data</label>
-                        <input v-model="tr.date_followed" :disabled="disabled" type="text" placeholder="es. 2022" class="field" />
+                        <label class="block text-xs text-gray-500 mb-1">Date</label>
+                        <input v-model="tr.date_followed" :disabled="disabled" type="text" placeholder="e.g. 2022" class="field" />
                     </div>
                     <div class="col-span-2">
-                        <label class="block text-xs text-gray-500 mb-1">Certificato</label>
+                        <label class="block text-xs text-gray-500 mb-1">Certificate</label>
                         <input v-model="tr.certificate_obtained" :disabled="disabled" type="text" class="field" />
                     </div>
                     <div class="col-span-1 flex justify-end">
@@ -75,7 +75,7 @@
                     </div>
                 </div>
             </div>
-            <p v-else class="text-sm text-gray-400 italic">Nessun corso aggiunto.</p>
+            <p v-else class="text-sm text-gray-400 italic">No courses added.</p>
         </div>
     </div>
 </template>

@@ -19,7 +19,7 @@ class AiImportController extends Controller
         $cv = $request->user()->cv;
 
         if ($cv->ai_import_count >= self::IMPORT_LIMIT) {
-            return response()->json(['error' => 'Hai raggiunto il limite di 3 importazioni AI. Contatta l\'amministratore per richiedere un reset.'], 422);
+            return response()->json(['error' => 'You have reached the 3 AI import limit. Contact your administrator to request a reset.'], 422);
         }
 
         $request->validate([
@@ -42,7 +42,7 @@ class AiImportController extends Controller
         $cv = $request->user()->cv;
 
         if ($cv->ai_import_count >= self::IMPORT_LIMIT) {
-            return response()->json(['error' => 'Hai raggiunto il limite di 3 importazioni AI. Contatta l\'amministratore per richiedere un reset.'], 422);
+            return response()->json(['error' => 'You have reached the 3 AI import limit. Contact your administrator to request a reset.'], 422);
         }
 
         $request->validate([
