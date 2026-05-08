@@ -185,13 +185,13 @@ const projectsRef = computed(() => props.cv.projects ?? []);
 const { expertise } = useExpertiseCalc(projectsRef);
 
 const sorted = computed(() =>
-    Object.entries(expertise.value).sort(([, a], [, b]) => b - a),
+    Object.entries(expertise.value).sort(([, a], [, b]) => b.months - a.months),
 );
 
 const formattedExpertise = computed(() =>
-    sorted.value.map(([tech, months]) => {
+    sorted.value.map(([tech, data]) => {
         const label = tech.charAt(0).toUpperCase() + tech.slice(1);
-        return `${label}: ${months} month${months !== 1 ? 's' : ''}`;
+        return `${label}: ${data.months} month${data.months !== 1 ? 's' : ''}`;
     }).join('; '),
 );
 
