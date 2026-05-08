@@ -1,58 +1,203 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# CV Manager EU
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A web application for collecting, editing, and exporting professional CVs in the **DIGIT-TM II** format — the standardised template required for EU framework contracts (e.g. DIGIT, ENISA, EIB).
 
-## About Laravel
+Built with **Laravel 11**, **Tailwind CSS**, and the **Anthropic Claude API**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+---
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## ✨ Features
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### For Candidates
+- Structured CV editor with all DIGIT-TM II fields
+- Project management — add, edit, delete work experience entries
+- Technology tagging with competence ratings (1–5) per project
+- Language proficiency table
+- **AI Import** — extract project history automatically from:
+  - Pasted text (existing CV, LinkedIn export, etc.)
+  - PDF upload (max 5 MB)
+- Auto-save
 
-## Learning Laravel
+### For Administrators
+- Admin dashboard with CV status overview (draft / locked / archived)
+- Invite candidates via email
+- Lock / unlock candidate editing
+- Archive CVs
+- Export CV as **.docx** (DIGIT-TM II template) — one click download
+- Suspend / unsuspend user accounts
+- Reset AI import quota per candidate
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+### Output
+The exported Word document includes:
+- Personal and professional overview with automatic checkbox fields
+- Profile summary page
+- Trainings and certifications table
+- Technology expertise table — months of experience calculated automatically across all projects (overlapping dates merged)
+- One page per project with full structured detail
 
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+---
 
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
+## 🛠 Tech Stack
 
-## Agentic Development
+| Layer | Technology |
+|---|---|
+| Backend | Laravel 11 (PHP 8.2+) |
+| Frontend | Blade + Tailwind CSS + Alpine.js |
+| Authentication | Laravel Breeze + Sanctum |
+| AI extraction | Anthropic Claude API (`claude-haiku-4-5-20251001`) |
+| PDF extraction | `pdftotext` (Poppler CLI) |
+| Word generation | PHPWord |
+| Deployment | Envoy |
 
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+---
+
+## 🚀 Installation
+
+### Requirements
+- PHP 8.2+
+- Composer
+- Node.js + npm
+- MySQL or PostgreSQL
+- `pdftotext` installed on the server (`apt install poppler-utils`)
+- Anthropic API key
+
+### Steps
 
 ```bash
-composer require laravel/boost --dev
+# Clone the repository
+git clone https://github.com/your-username/cv-manager-eu.git
+cd cv-manager-eu
 
-php artisan boost:install
+# Install PHP dependencies
+composer install
+
+# Install JS dependencies
+npm install && npm run build
+
+# Copy environment file
+cp .env.example .env
+
+# Generate application key
+php artisan key:generate
+
+# Configure your .env (see below)
+
+# Run migrations
+php artisan migrate
+
+# (Optional) Seed with a default admin user
+php artisan db:seed
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+---
 
-## Contributing
+## ⚙️ Environment Configuration
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Key variables to set in your `.env`:
 
-## Code of Conduct
+```env
+APP_NAME="CV Manager EU"
+APP_URL=https://your-domain.com
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=cv_manager
+DB_USERNAME=your_db_user
+DB_PASSWORD=your_db_password
 
-## Security Vulnerabilities
+MAIL_MAILER=smtp
+MAIL_HOST=your.smtp.host
+MAIL_PORT=587
+MAIL_USERNAME=your@email.com
+MAIL_PASSWORD=your_mail_password
+MAIL_FROM_ADDRESS=no-reply@your-domain.com
+MAIL_FROM_NAME="CV Manager EU"
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+ANTHROPIC_API_KEY=sk-ant-...
+```
 
-## License
+---
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+## 👥 User Roles
+
+| Role | Access |
+|---|---|
+| `candidate` | CV editor only — self-registered or invited |
+| `admin` | Full dashboard, user management, DOCX export |
+
+Admin accounts are created manually (set `role = 'admin'` in the `users` table, or via seeder).
+
+Candidates can self-register at `/register` or be invited by an admin from `/admin/users`.
+
+---
+
+## 🤖 AI Import
+
+The AI import feature uses **Anthropic Claude** (`claude-haiku-4-5-20251001`) to extract structured project data from unstructured text or PDF files.
+
+- Each candidate has a quota of **3 AI imports**
+- Admins can reset the quota from the users management page
+- The extraction prompt is written in Italian (matching the target user base)
+- Supported input: plain text paste or PDF upload (max 5 MB, requires `pdftotext`)
+
+---
+
+## 📄 DIGIT-TM II Export
+
+The Word export is generated using **PHPWord** and follows the official DIGIT-TM II CV template structure:
+
+- Page 1 — Personal overview, education, languages, top 5 technologies
+- Page 2 — Profile summary
+- Page 3 — Trainings and certifications
+- Page 4 — Full technology expertise table (competence + months, auto-calculated)
+- Project pages — one per project, structured layout
+
+Technology experience months are computed automatically. Overlapping date ranges across projects are merged to avoid double-counting.
+
+---
+
+## 🚢 Deployment with Envoy
+
+The project includes an `Envoy.blade.php` for zero-downtime deployment:
+
+```bash
+envoy run deploy
+```
+
+Deployments use a `releases/` + `current/` symlink structure. Configure your server's document root to point to `current/public`.
+
+---
+
+## 🔒 Security
+
+- Login rate-limited to 5 attempts per minute per IP
+- Email verification required for self-registered users (invited candidates are pre-verified)
+- Forced password change on first login for invited candidates
+- CV lock prevents editing even by authenticated candidates
+- Suspended users are logged out immediately on their next request
+
+---
+
+## 📁 Key Routes
+
+| Method | Route | Description |
+|---|---|---|
+| GET | `/cv/edit` | CV editor (candidate) |
+| POST | `/cv/ai-import/text` | AI import from text |
+| POST | `/cv/ai-import/pdf` | AI import from PDF |
+| GET | `/admin/dashboard` | CV list with status |
+| GET | `/admin/cvs/{id}/export` | Download DOCX |
+| POST | `/admin/users/invite` | Invite a candidate |
+| PATCH | `/admin/cvs/{id}/lock` | Lock a CV |
+| PATCH | `/admin/users/{id}/reset-ai-import` | Reset AI quota |
+
+---
+
+## 📝 License
+
+This project is open source and free to use. If you use it or adapt it, a mention is appreciated.
+
+---
+
+*Developed by [Cristian Pantea](https://fusionsoft.it)*
