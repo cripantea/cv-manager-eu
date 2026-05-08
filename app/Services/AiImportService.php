@@ -12,8 +12,8 @@ class AiImportService
 
     public function __construct()
     {
-        $this->apiKey = env('ANTHROPIC_API_KEY', '');
-        $this->model  = env('ANTHROPIC_MODEL', 'claude-haiku-4-5-20251001');
+        $this->apiKey = config('services.anthropic.key');
+        $this->model  = config('services.anthropic.model');;
     }
 
     public function importFromText(string $text): array

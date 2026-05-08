@@ -39,45 +39,47 @@
                         </tr>
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-100">
-                        <tr v-for="cv in cvs" :key="cv.id" class="hover:bg-gray-50 transition-colors">
+                        <tr v-for="cv in cvs" :key="cv.user.id" class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4 text-sm font-medium text-gray-900">
                                 {{ cv.first_name || cv.user.name }}
                                 {{ cv.last_name ?? '' }}
+                                <span v-if="cv.user.role === 'admin'" class="ml-1 text-xs font-normal text-purple-600">(admin)</span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">{{ cv.user.email }}</td>
                             <td class="px-6 py-4">
-                                <span :class="statusBadge(cv.status)" class="text-xs font-semibold px-2.5 py-0.5 rounded-full">
+                                <span v-if="cv.status" :class="statusBadge(cv.status)" class="text-xs font-semibold px-2.5 py-0.5 rounded-full">
                                     {{ cv.status }}
                                 </span>
+                                <span v-else class="text-xs text-gray-400">no CV</span>
                             </td>
                             <td class="px-6 py-4 text-sm text-gray-500">
                                 {{ formatDate(cv.updated_at) }}
                             </td>
                             <td class="px-6 py-4 text-right">
-                                <div class="flex items-center justify-end gap-2">
+                                <div v-if="cv.cv_id" class="flex items-center justify-end gap-2">
                                     <button
                                         v-if="cv.status !== 'locked' && cv.status !== 'archived'"
-                                        @click="confirm('Lock this CV?') && lock(cv)"
+                                        @click="requestAction(cv, lock, 'Lock this CV?')"
                                         class="text-xs px-3 py-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
                                     >
                                         Lock
                                     </button>
                                     <button
                                         v-if="cv.status === 'locked'"
-                                        @click="confirm('Unlock this CV?') && unlock(cv)"
+                                        @click="requestAction(cv, unlock, 'Unlock this CV?')"
                                         class="text-xs px-3 py-1.5 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600 transition-colors"
                                     >
                                         Unlock
                                     </button>
                                     <button
                                         v-if="cv.status !== 'archived'"
-                                        @click="confirm('Archive this CV? This action cannot be undone.') && archive(cv)"
+                                        @click="requestAction(cv, archive, 'Archive this CV? This action cannot be undone.')"
                                         class="text-xs px-3 py-1.5 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition-colors"
                                     >
                                         Archive
                                     </button>
                                     <a
-                                        :href="`/admin/cvs/${cv.id}/export`"
+                                        :href="`/admin/cvs/${cv.cv_id}/export`"
                                         target="_blank"
                                         class="text-xs px-3 py-1.5 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors"
                                         title="Download DOCX DIGIT-TM II"
@@ -85,6 +87,7 @@
                                         Download
                                     </a>
                                 </div>
+                                <span v-else class="text-xs text-gray-400">—</span>
                             </td>
                         </tr>
                         <tr v-if="cvs.length === 0">
@@ -94,6 +97,27 @@
                         </tr>
                     </tbody>
                 </table>
+            </div>
+        </div>
+
+        <!-- Confirm dialog -->
+        <div
+            v-if="pending"
+            class="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+            @click.self="cancelPending"
+        >
+            <div class="bg-white rounded-xl shadow-xl p-6 max-w-sm w-full mx-4">
+                <p class="text-sm text-gray-700 mb-6">{{ pending.label }}</p>
+                <div class="flex justify-end gap-3">
+                    <button
+                        @click="cancelPending"
+                        class="px-4 py-2 text-sm rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-50 transition-colors"
+                    >Cancel</button>
+                    <button
+                        @click="confirmPending"
+                        class="px-4 py-2 text-sm rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition-colors"
+                    >Confirm</button>
+                </div>
             </div>
         </div>
     </AppLayout>
@@ -108,6 +132,23 @@ const props = defineProps({
     cvs:    Array,
     counts: Object,
 });
+
+const pending = ref(null); // { cv, action, label }
+
+function requestAction(cv, action, label) {
+    pending.value = { cv, action, label };
+}
+
+function confirmPending() {
+    if (!pending.value) return;
+    const { cv, action } = pending.value;
+    pending.value = null;
+    action(cv);
+}
+
+function cancelPending() {
+    pending.value = null;
+}
 
 const statusFilter = ref('');
 
@@ -137,14 +178,14 @@ function formatDate(dateStr) {
 }
 
 function lock(cv) {
-    router.patch(route('admin.cvs.lock', cv.id));
+    router.patch(route('admin.cvs.lock', cv.cv_id));
 }
 
 function unlock(cv) {
-    router.patch(route('admin.cvs.unlock', cv.id));
+    router.patch(route('admin.cvs.unlock', cv.cv_id));
 }
 
 function archive(cv) {
-    router.patch(route('admin.cvs.archive', cv.id));
+    router.patch(route('admin.cvs.archive', cv.cv_id));
 }
 </script>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Cv;
+use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -13,10 +14,10 @@ class CvAdminController extends Controller
 {
     public function index(Request $request): InertiaResponse
     {
-        $query = Cv::with('user');
+        $query = User::with('cv')->where('role', 'candidate');
 
         if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
+            $query->whereHas('cv', fn($q) => $q->where('status', $request->input('status')));
         }
 
         $counts = [
@@ -25,8 +26,17 @@ class CvAdminController extends Controller
             'archived' => Cv::where('status', 'archived')->count(),
         ];
 
+        $users = $query->orderBy('name')->get()->map(fn(User $u) => [
+            'cv_id'      => $u->cv?->id,
+            'status'     => $u->cv?->status,
+            'first_name' => $u->cv?->first_name,
+            'last_name'  => $u->cv?->last_name,
+            'updated_at' => $u->cv?->updated_at,
+            'user'       => ['id' => $u->id, 'name' => $u->name, 'email' => $u->email, 'role' => $u->role],
+        ]);
+
         return Inertia::render('Admin/Dashboard', [
-            'cvs'    => $query->get(),
+            'cvs'    => $users,
             'counts' => $counts,
         ]);
     }

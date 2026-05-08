@@ -55,6 +55,29 @@ class UserController extends Controller
         return redirect()->back()->with('success', "Invitation sent to {$user->email}");
     }
 
+    public function inviteAdmin(Request $request): RedirectResponse
+    {
+        $validated = $request->validate([
+            'name'  => ['required', 'string', 'max:255'],
+            'email' => ['required', 'email', 'unique:users,email'],
+        ]);
+
+        $user = User::create([
+            'name'                 => $validated['name'],
+            'email'                => $validated['email'],
+            'password'             => bcrypt(Str::random(32)),
+            'role'                 => 'admin',
+            'must_change_password' => true,
+            'email_verified_at'    => now(),
+        ]);
+
+        $token = Password::createToken($user);
+
+        Mail::to($user->email)->send(new UserInvite($user, $token));
+
+        return redirect()->back()->with('success', "Admin invitation sent to {$user->email}");
+    }
+
     public function resetAiImport(User $user): RedirectResponse
     {
         abort_if(!$user->cv, 404, 'CV not found for this user.');

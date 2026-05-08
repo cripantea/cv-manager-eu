@@ -11,38 +11,75 @@
                 {{ flash.error }}
             </div>
 
-            <!-- Invite form -->
-            <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
-                <h2 class="text-base font-semibold text-gray-900 mb-4">Invite new candidate</h2>
-                <form @submit.prevent="sendInvite" class="flex flex-col sm:flex-row gap-3">
-                    <div class="flex-1">
-                        <input
-                            v-model="inviteForm.name"
-                            type="text"
-                            placeholder="Full name"
-                            required
-                            class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <p v-if="inviteForm.errors.name" class="mt-1 text-xs text-red-600">{{ inviteForm.errors.name }}</p>
-                    </div>
-                    <div class="flex-1">
-                        <input
-                            v-model="inviteForm.email"
-                            type="email"
-                            placeholder="Email"
-                            required
-                            class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        />
-                        <p v-if="inviteForm.errors.email" class="mt-1 text-xs text-red-600">{{ inviteForm.errors.email }}</p>
-                    </div>
-                    <button
-                        type="submit"
-                        :disabled="inviteForm.processing"
-                        class="px-5 py-2 bg-[#1F3864] text-white text-sm font-semibold rounded-lg hover:bg-[#162a4e] disabled:opacity-50 transition-colors whitespace-nowrap"
-                    >
-                        {{ inviteForm.processing ? 'Sending...' : 'Send invitation' }}
-                    </button>
-                </form>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <!-- Invite candidate -->
+                <div class="bg-white border border-gray-200 rounded-xl shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-900 mb-4">Invite new candidate</h2>
+                    <form @submit.prevent="sendInvite" class="flex flex-col gap-3">
+                        <div>
+                            <input
+                                v-model="inviteForm.name"
+                                type="text"
+                                placeholder="Full name"
+                                required
+                                class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <p v-if="inviteForm.errors.name" class="mt-1 text-xs text-red-600">{{ inviteForm.errors.name }}</p>
+                        </div>
+                        <div>
+                            <input
+                                v-model="inviteForm.email"
+                                type="email"
+                                placeholder="Email"
+                                required
+                                class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                            <p v-if="inviteForm.errors.email" class="mt-1 text-xs text-red-600">{{ inviteForm.errors.email }}</p>
+                        </div>
+                        <button
+                            type="submit"
+                            :disabled="inviteForm.processing"
+                            class="px-5 py-2 bg-[#1F3864] text-white text-sm font-semibold rounded-lg hover:bg-[#162a4e] disabled:opacity-50 transition-colors"
+                        >
+                            {{ inviteForm.processing ? 'Sending...' : 'Send invitation' }}
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Invite admin -->
+                <div class="bg-white border border-purple-200 rounded-xl shadow-sm p-6">
+                    <h2 class="text-base font-semibold text-gray-900 mb-1">Invite new admin</h2>
+                    <p class="text-xs text-gray-500 mb-4">The new user will have full admin access. No CV will be created.</p>
+                    <form @submit.prevent="sendAdminInvite" class="flex flex-col gap-3">
+                        <div>
+                            <input
+                                v-model="adminInviteForm.name"
+                                type="text"
+                                placeholder="Full name"
+                                required
+                                class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            />
+                            <p v-if="adminInviteForm.errors.name" class="mt-1 text-xs text-red-600">{{ adminInviteForm.errors.name }}</p>
+                        </div>
+                        <div>
+                            <input
+                                v-model="adminInviteForm.email"
+                                type="email"
+                                placeholder="Email"
+                                required
+                                class="w-full text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500"
+                            />
+                            <p v-if="adminInviteForm.errors.email" class="mt-1 text-xs text-red-600">{{ adminInviteForm.errors.email }}</p>
+                        </div>
+                        <button
+                            type="submit"
+                            :disabled="adminInviteForm.processing"
+                            class="px-5 py-2 bg-purple-700 text-white text-sm font-semibold rounded-lg hover:bg-purple-800 disabled:opacity-50 transition-colors"
+                        >
+                            {{ adminInviteForm.processing ? 'Sending...' : 'Send admin invitation' }}
+                        </button>
+                    </form>
+                </div>
             </div>
 
             <div class="bg-white shadow-sm rounded-xl overflow-hidden border border-gray-200">
@@ -125,6 +162,11 @@ const inviteForm = useForm({
     email: '',
 });
 
+const adminInviteForm = useForm({
+    name:  '',
+    email: '',
+});
+
 function formatDate(dateStr) {
     if (!dateStr) return '—';
     return new Date(dateStr).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' });
@@ -140,6 +182,13 @@ function sendInvite() {
     inviteForm.post(route('admin.users.invite'), {
         preserveScroll: true,
         onSuccess: () => inviteForm.reset(),
+    });
+}
+
+function sendAdminInvite() {
+    adminInviteForm.post(route('admin.users.invite-admin'), {
+        preserveScroll: true,
+        onSuccess: () => adminInviteForm.reset(),
     });
 }
 

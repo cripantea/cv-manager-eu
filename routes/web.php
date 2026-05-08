@@ -66,6 +66,7 @@ Route::middleware(['auth', 'verified', 'role:admin'])->group(function () {
     Route::patch('/admin/users/{user}/unsuspend', [UserController::class, 'unsuspend'])->name('admin.users.unsuspend');
     Route::get('/admin/cvs/{cv}/export', [DocxExportController::class, 'export'])->name('admin.cvs.export');
     Route::post('/admin/users/invite', [UserController::class, 'invite'])->name('admin.users.invite');
+    Route::post('/admin/users/invite-admin', [UserController::class, 'inviteAdmin'])->name('admin.users.invite-admin');
     Route::patch('/admin/users/{user}/reset-ai-import', [UserController::class, 'resetAiImport'])->name('admin.users.reset-ai-import');
 });
 
